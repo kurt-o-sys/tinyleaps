@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./pocketgrid.css" type="text/css" rel="stylesheet"/>
+    <link href="./responsive.css" type="text/css" rel="stylesheet"/>
+    <title>Reisblog Ruth en Kurt</title>
+</head>
+
+<body>
+
+<div class="block-group">
+    <header class="block">
+        <script id="headerscript" type="text/ractive">
+           <h1>{{titel}}</h1>
+           <h2>{{subtitel}}</h2>
+        </script>
+    </header>
+    <nav class="block">
+        <div>
+            Nav
+        </div>
+    </nav>
+    <section class="block">
+        <article class="block-group">
+            <h1>blog title 1</h1>
+
+            <div class="block content">
+                <div class="block text">
+                    tekst 1
+                </div>
+                <div class="block pics">
+                    pics 1
+                </div>
+            </div>
+            <div class="block comment">comment 1</div>
+        </article>
+        <article class="block-group">
+            <h1>blog title 2</h1>
+
+            <div class="block content">
+                <div class="block text">
+                    tekst 2
+                </div>
+                <div class="block pics">
+                    pics 2
+                </div>
+            </div>
+            <div class="block comment">comment 2</div>
+        </article>
+        <article class="block-group">
+            <h1>blog title 3</h1>
+
+            <div class="block content">
+                <div class="block text">
+                    tekst 3
+                </div>
+                <div class="block pics">
+                    pics 3
+                </div>
+            </div>
+            <div class="block comment">comment 3</div>
+        </article>
+
+    </section>
+    <footer class="block">Footer</footer>
+</div>
+
+<script src="jquery.js"></script>
+<script src="http://cdn.sockjs.org/sockjs-0.3.4.min.js"></script>
+<script src="vertxbus.js"></script>
+<script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
+<script src="app.js"></script>
+
+<script>
+   $('article > h1').click(function() {
+      $(this).siblings('div').slideToggle('slow');
+   });
+
+   var eb = null;
+
+   $(document).ready(function() {
+      eb = new vertx.EventBus("http://test.tinyleaps.be/eventbus");
+      eb.onopen = function() {
+         var json = "something";
+         eb.send("be.qsys.tinyleaps.api", json, function(reply) {
+	    alert(JSON.stringify(reply.result));
+         });
+      }
+   });
+
+</script>
+
+
+</body>
+</html>

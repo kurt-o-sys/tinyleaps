@@ -1,0 +1,130 @@
+@font-face {
+   font-family: 'NeuchaRegular';
+   src: url('neucha-webfont.eot');
+   src: url('neucha-webfont.eot?#iefix') format('embedded-opentype'),
+      url('neucha-webfont.woff') format('woff'),
+      url('neucha-webfont.ttf') format('truetype'),
+      url('neucha-webfont.svg#NeuchaRegular') format('svg');
+   font-weight: normal;
+   font-style: normal;
+
+}
+
+@font-face {
+   font-family: 'NovaFlatRegular';
+   src: url('novaflat-webfont.eot');
+   src: url('novaflat-webfont.eot?#iefix') format('embedded-opentype'),
+      url('novaflat-webfont.woff') format('woff'),
+      url('novaflat-webfont.ttf') format('truetype'),
+      url('novaflat-webfont.svg#NovaFlatRegular') format('svg');
+
+}
+
+@font-face {
+   font-family: "Swanky and Moo Moo";
+   src: url('swankyandmoomoo-webfont.eot');
+   src: url('swankyandmoomoo-webfont.eot?#iefix') format('embedded-opentype'),
+      url('swankyandmoomoo-webfont.woff') format('woff'),
+      url('swankyandmoomoo-webfont.ttf') format('truetype'),
+      url('swankyandmoomoo-webfont.svg#SwankyandMooMooRegular') format('svg');
+}
+
+body {
+   font-family: 'NovaFlatRegular';
+   font-size: 1.1em;
+   color: rgb(63,63,63);
+   border-color: rgb(63,63,63);
+   background-color: rgb(204,204,194);
+}
+
+article {
+   border-radius: 0.62em;
+   border-bottom: 2px dotted grey;
+}
+
+header { padding-bottom: 1.5em}
+nav.block { width: 100%; font-size: 0.84em}
+section.block { width: 100%;}
+article { width:  100%;}
+div.content { width: 100%; }
+div.comment { width: 100%; }
+div.pics { width: 100%; }
+
+nav.block > div {
+   padding: 0.25em;
+   background-color: rgba(255,255,255,0.68);
+   border-radius: 0.5em;
+   box-shadow: 6px 6px 9px rgb(102,102,97);
+}
+
+section.block {
+   padding-left: 1.5em;
+   padding-right: 1.5em;
+   background-color: rgba(255,255,255,0.68);
+   border-radius: 1em;
+   box-shadow: 8px 8px 13px rgb(102,102,97);
+}
+
+
+@media only screen and (min-width:20em) { /* smartphones, iPhone, portrait 480x320 phones */
+}
+
+@media only screen and (min-width:30.063em) { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+
+   body {
+      background-image:url(./achtergrond.jpg);
+      background-position:top center;
+   }
+
+   header h1,
+   header h2 {
+      margin:0;
+      color: white;
+      opacity: 0.62;
+      filter: alpha(opacity=62);
+      font-weight: normal;
+   }
+
+   header h1 {
+      padding-top: 10px;
+      padding-left: 15px;
+      font-size: 2.62em;
+   }
+
+   header h2 {
+      padding-top: 60px;
+      padding-right: 15px;
+     text-align: right;
+     font-size: 1.62em;
+   }
+
+   header .bgpic {
+      height: 225px;
+      width: 100%;
+      z-index: -20;
+      top: -202px;  /* 44(?) + 10+60+36+52 */
+      position: relative;
+      background-position: center;
+   }
+}
+
+@media only screen and (min-width:40.063em) { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+   div.content { width: 61.8%; }
+   div.comment { width: 38.2%; }
+}
+
+@media only screen and (min-width:60.063em) { /* tablet, landscape iPad, lo-res laptops ands desktops */
+   nav.block { width: 23.6%; }
+   section.block { width: 76.4%; }
+
+   header.block {
+      height: 225px;
+      padding-top: 0px;
+   }
+}
+
+@media only screen and (min-width:64.063em) { /* big landscape tablets, laptops, and desktops */
+}
+
+@media only screen and (min-width:80.063em) { /* hi-res laptops and desktops */
+}
