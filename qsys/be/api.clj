@@ -5,12 +5,16 @@
 
 (def address "be.qsys.tinyleaps.api")
 
+(defmulti generateCall :action)
+
+(defmethod generateCall "countries" [msg] {:action "select" :stmt "select * from travelblog.country"})
+(defmethod generateCall :default [_] "")
+
+
 (defn send [addr msg]
   (let [ch (chan 1)]
     (eb/send addr msg #(put! ch %)) ch))
 
-(defn generateCall [msg]
-  {:action "select" :stmt "select * from travelblog.country" })
 
 (eb/on-message
   address
