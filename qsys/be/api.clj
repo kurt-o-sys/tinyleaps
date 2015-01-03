@@ -13,7 +13,7 @@
 
 (defmethod jdbcCall "blogs" [msg] 
   (let [pars (:pars msg)
-        stmt (str "select bi.postdate, bi.title, bi.summary, bi.text "
+        stmt (str "select extract(epoch from bi.postdate), bi.title, bi.summary, bi.text "
               "from travelblog.blogitem bi "
               "where bi.id in "
                 "(select distinct r.blogitem"
