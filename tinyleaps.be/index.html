@@ -83,7 +83,12 @@
    $(document).ready(function() {
       eb = new vertx.EventBus("http://test.tinyleaps.be/eventbus");
       eb.onopen = function() {
-	 var json = {action: "countries"};
+      var json = {action: "blogs",
+      		  pars:{
+			travel: 1,
+			limit: 10,
+			offset: 0
+		 }};
          eb.send("be.qsys.tinyleaps.api", json, function(reply) {
 	    alert(JSON.stringify(reply.result));
          });
