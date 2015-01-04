@@ -9,11 +9,12 @@
 
 (defmethod jdbcCall "travelinfo" [msg] 
   (let [pars (:pars msg)
-        stmt (str "select * from travelblog.travelinfo ti "
+        stmt (str "select ti.name, extract(epoch from ti.startdate), extract(epoch from ti.enddate), ti.countries "
+                  "from travelblog.travelinfo ti "
                   "where ti.id = ?")]
     {:action "select"
      :stmt stmt
-     :values [[:travel pars]] }
+     :values [[(:travel pars)]] }
     ))
 
 
