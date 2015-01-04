@@ -9,7 +9,7 @@
 
 (defmethod jdbcCall "travelinfo" [msg] 
   (let [pars (:pars msg)
-        stmt (str "select c.country from travelblog.travelinfo ti "
+        stmt (str "select * from travelblog.travelinfo ti "
                   "where ti.id = ?")]
     {:action "select"
      :stmt stmt
