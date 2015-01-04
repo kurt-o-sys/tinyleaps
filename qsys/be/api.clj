@@ -7,26 +7,37 @@
 
 (defmulti jdbcCall :action)
 
+(defmethod jdbcCall "travelinfo" [msg] 
+  (let [pars (:pars msg)
+        stmt (str "select c.country from travelblog.travelinfo ti"
+                  "where ti.id = ?")]
+    {:action "select"
+     :stmt stmt
+     :values [[:travel pars]] }
+    ))
+
+
 (defmethod jdbcCall "countries" [msg] 
-  {:action "select" 
-   :stmt "select * from travelblog.country"})
+  (let [stmt "select * from travelblog.country" ]
+    {:action "select" 
+     :stmt stmt}
+    ))
 
 (defmethod jdbcCall "blogs" [msg] 
   (let [pars (:pars msg)
         stmt (str "select extract(epoch from bi.postdate), bi.title, bi.summary, bi.text "
-              "from travelblog.blogitem bi "
-              "where bi.id in "
-                "(select distinct r.blogitem"
-                " from travelblog.route r"
-                " where r.travel = ? and r.blogitem is not null) "
-              "order by bi.postdate desc "
-              "limit ? "
-              "offset ?")] 
-    { :action "select" 
-      :stmt stmt
-      :values [[(:travel pars) , (:limit pars), (:offset pars)]]}
-   
-  ))
+                  "from travelblog.blogitem bi "
+                  "where bi.id in "
+                  "(select distinct r.blogitem"
+                  " from travelblog.route r"
+                  " where r.travel = ? and r.blogitem is not null) "
+                  "order by bi.postdate desc "
+                  "limit ? "
+                  "offset ?")] 
+    {:action "select" 
+     :stmt stmt
+     :values [[(:travel pars) , (:limit pars), (:offset pars)]]}
+    ))
 
 (defmethod jdbcCall :default [_] "")
 
