@@ -113,8 +113,7 @@
 						}
 					},
 					function(reply) {
-						console.log(JSON.stringify(reply.result));
-						travelinfo.set('info', reply.result); 
+						travelinfo.set('info', reply.result[0]); 
 					});
 				}
 			});
