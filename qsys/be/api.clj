@@ -9,7 +9,10 @@
 
 (defmethod jdbcCall "travelinfo" [msg] 
   (let [pars (:pars msg)
-        stmt (str "select ti.name, extract(epoch from ti.startdate), extract(epoch from ti.enddate), array_to_string(ti.countries,',') "
+        stmt (str "select ti.name as name, "
+                  "extract(epoch from ti.startdate) as startdate, "
+                  "extract(epoch from ti.enddate) as enddate, "
+                  "array_to_string(ti.countries,',') as countries "
                   "from travelblog.travelinfo ti "
                   "where ti.id = ?")]
     {:action "select"
