@@ -51,7 +51,7 @@
 
 (def asyncCall° 
   (memo/lu asyncCall 
-           (cache/ttl-cache-factory {} :300000) 
+           (cache/ttl-cache-factory {} :ttl 300000) 
            :lu/treshold 64))
 
 (eb/on-message
