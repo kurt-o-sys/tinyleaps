@@ -51,6 +51,8 @@
 (eb/on-message
   address
   (fn [msg]
-    (eb/reply (asyncCall msg))))
+    (let [res (asyncCall msg)] 
+      (println (str "resultaat: " res))
+      (eb/reply res))))
 
 (core/on-stop (close-db! db))
