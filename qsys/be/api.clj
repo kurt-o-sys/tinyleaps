@@ -4,6 +4,7 @@
             [ vertx.eventbus :as eb]
             [ postgres.async :refer :all]
             [ clojure.core.async :refer [go chan put! <! <!!]]))
+ 
 
 (def address "be.qsys.tinyleaps.api")
 
@@ -13,6 +14,7 @@
                   :username "kurt"
                   :password "oebele"
                   :pool-size 2 }))
+
 
 (defmulti asyncCall :action)
 
@@ -24,11 +26,11 @@
                   "array_to_string(ti.countries,',') as countries "
                   "from travelblog.travelinfo ti "
                   "where ti.id = $1")]
-    (<!! (query! db [stmt (:travel pars)]))))
+    (<!! (<query! db [stmt (:travel pars)]))))
 
 (defmethod asyncCall "countries" [msg] 
   (let [stmt "select * from travelblog.country" ]
-    (<!! (query! db [stmt]))))
+    (<!! (<query! db [stmt]))))
 
 (defmethod asyncCall "blogs" [msg] 
   (let [pars (:pars msg)
@@ -41,7 +43,7 @@
                   "order by bi.postdate desc "
                   "limit $2 "
                   "offset $3")] 
-    (<!! (query! db [stmt (:travel pars) (:limit pars) (:offset pars)]))))
+    (<!! (<query! db [stmt (:travel pars) (:limit pars) (:offset pars)]))))
 
 (defmethod asyncCall :default [_] "")
 
