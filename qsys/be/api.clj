@@ -51,6 +51,6 @@
 (eb/on-message
   address
   (fn [msg]
-    (eb/reply (getAsync msg))))
+    (eb/reply (asyncCall msg))))
 
 (core/on-stop (close-db! db))
