@@ -1,10 +1,11 @@
 (ns be.qsys.tinyleaps.api
   (:refer-clojure :exclude [send])
-  (:require [ vertx.core :as core]
-            [ vertx.eventbus :as eb]
-            [ postgres.async :refer :all]
-            [ clojure.core.async :refer [<!!]]))
- 
+  (:require [ vertx.core :as core ]
+            [ vertx.eventbus :as eb ]
+            [ postgres.async :refer :all ]
+            [ clojure.core [async :refer [<!!]] [memoize :as memo] [cache :as cache]]
+            ))
+
 
 (def address "be.qsys.tinyleaps.api")
 
@@ -48,11 +49,15 @@
 (defmethod asyncCall :default [_] "")
 
 
+(def asyncCall° 
+  (memo/lu asyncCall 
+           (cache/ttl-cache-factory {} :300000) 
+           :lu/treshold 64))
+
 (eb/on-message
   address
   (fn [msg]
-    (let [res (asyncCall msg)] 
-      (println (str "resultaat: " res))
-      (eb/reply res))))
+    (let [res (asyncCall° msg)] 
+      (eb/reply {:result res}))))
 
 (core/on-stop (close-db! db))
