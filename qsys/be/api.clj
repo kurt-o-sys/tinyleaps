@@ -3,7 +3,7 @@
   (:require [ vertx.core :as core]
             [ vertx.eventbus :as eb]
             [ postgres.async :refer :all]
-            [ clojure.core.async :refer [go chan put! <! <!!]]))
+            [ clojure.core.async :refer [<!!]]))
  
 
 (def address "be.qsys.tinyleaps.api")
@@ -48,15 +48,9 @@
 (defmethod asyncCall :default [_] "")
 
 
-(defn getAsync [msg]
-  (let [ch (chan 1)]
-    (put! ch (asyncCall msg))))
-
-
 (eb/on-message
   address
   (fn [msg]
-    (go (let [reply (<! (getAsync msg))]
-          (eb/reply reply)))))
+    (eb/reply (getAsync msg))))
 
 (core/on-stop (close-db! db))
