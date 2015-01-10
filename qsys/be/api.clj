@@ -57,4 +57,4 @@
     (go (let [reply (<! (getAsync msg))]
           (eb/reply reply)))))
 
-(core/on-stop (closedb! db))
+(core/on-stop (close-db! db))
