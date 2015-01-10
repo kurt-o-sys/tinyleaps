@@ -3,7 +3,7 @@
   (:require [ vertx.core :as core]
             [ vertx.eventbus :as eb]
             [ postgres.async :refer :all]
-            [ clojure.core.async :refer [go chan put! <!]]))
+            [ clojure.core.async :refer [go chan put! <! <!!]]))
 
 (def address "be.qsys.tinyleaps.api")
 
