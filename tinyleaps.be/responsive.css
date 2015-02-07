@@ -68,6 +68,10 @@ section.block {
 	line-height: 168%;
 }
 
+.summary {
+	font-weight: bold;  
+}
+
 article { width:  100%;}
 div.content { width: 100%; }
 div.comment { width: 100%; }

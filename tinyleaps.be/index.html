@@ -40,9 +40,13 @@
 			<article class="block-group">
 			<h1 contenteditable="true">{{title}}</h1>
 
+
 			<div class="block content">
+				<div class="block summary">
+					{{{summary}}}
+				</div>
 				<div contenteditable="true" class="block text">
-					{{text}}
+					{{{text}}}
 				</div>
 				<div class="block pics">
 					testing 1
@@ -101,6 +105,7 @@
 						}
 					},
 					function(reply) {
+                                                console.log(reply.result);
 						posts.set('posts', reply.result); 
 					});
 
