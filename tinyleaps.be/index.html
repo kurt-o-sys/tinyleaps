@@ -38,14 +38,14 @@
 
 		<script id='post' type='text/ractive'>
 			<article class="block-group">
-			<h1 contenteditable="true">{{title}}</h1>
+			<h1>{{title}}</h1>
 
 
 			<div class="block content">
 				<div class="block summary">
 					{{{summary}}}
 				</div>
-				<div contenteditable="true" class="block text">
+				<div class="block text">
 					{{{text}}}
 				</div>
 				<div class="block pics">
@@ -72,6 +72,17 @@
 				$(this).siblings('div').slideToggle('slow');
 			});
 
+			$('article .content .text, p').hallo({
+				plugins: {
+					'halloformat': {},
+					'halloheadings': {"formatBlocks": ["p"]},
+					'hallolists': {},
+					'hallolink': {},
+					'halloimage': {}
+				},
+				editable: true}); 
+
+
 			var eb = null;
 
 			var posts = new Ractive({
@@ -88,9 +99,7 @@
 				travel: 1
 			};
 
-			$('article > h1, article div.text').hallo({editable: false}); // voor later: inline editing als ingelogd
-
-			$(document).ready(function() {
+					$(document).ready(function() {
 				eb = new vertx.EventBus("http://test.tinyleaps.be/eventbus");
 				eb.onopen = function() {
 
