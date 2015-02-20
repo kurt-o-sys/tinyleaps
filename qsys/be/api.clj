@@ -49,7 +49,7 @@
 (defmethod asyncCall :default [_] "")
 
 
-(def asyncCallÂ° 
+(def asyncCall° 
   (memo/lu asyncCall 
            (cache/ttl-cache-factory {} :ttl 300000) 
            :lu/threshold 64))
@@ -57,7 +57,7 @@
 (eb/on-message
   address
   (fn [msg]
-    (let [res (asyncCallÂ° msg)] 
+    (let [res (asyncCall° msg)] 
       (eb/reply {:result res}))))
 
 (core/on-stop (close-db! db))
