@@ -3,6 +3,7 @@
   (:require [ vertx.core :as core ]
             [ vertx.eventbus :as eb ]
             [ postgres.async :refer :all ]
+<<<<<<< HEAD
             [ clojure.core [async :refer [<!!]] [memoize :as memo] [cache :as cache]]
             ))
 
@@ -15,6 +16,13 @@
                   :username "kurt"
                   :password "oebele"
                   :pool-size 2 }))
+=======
+            [ clojure.core [async :refer [<!!]] [memoize :as memo] [cache :as cache]]))
+
+(def address "be.qsys.tinyleaps.api")
+
+(def db (open-db (:db (core/config))))
+>>>>>>> 1db2619dc97f22b19897ab78c65bc2cd7664d810
 
 
 (defmulti asyncCall :action)
@@ -49,7 +57,11 @@
 (defmethod asyncCall :default [_] "")
 
 
+<<<<<<< HEAD
 (def asyncCall° 
+=======
+(def asyncCallÂ° 
+>>>>>>> 1db2619dc97f22b19897ab78c65bc2cd7664d810
   (memo/lu asyncCall 
            (cache/ttl-cache-factory {} :ttl 300000) 
            :lu/threshold 64))
@@ -57,7 +69,11 @@
 (eb/on-message
   address
   (fn [msg]
+<<<<<<< HEAD
     (let [res (asyncCall° msg)] 
+=======
+    (let [res (asyncCallÂ° msg)] 
+>>>>>>> 1db2619dc97f22b19897ab78c65bc2cd7664d810
       (eb/reply {:result res}))))
 
 (core/on-stop (close-db! db))
