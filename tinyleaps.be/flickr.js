@@ -32,17 +32,14 @@
 				$.each(data.items, function (index, item) {
 					var link = item.media.m.replace('_m', '_z');
 
-					$("<img />")
+					$("<img data-caption='"+ item.title +"' />")
 						.attr("src", item.media.m)
 						.appendTo($el)
 						.wrap(options.container || '')
 						.wrap([
-							'<a href="',
-							link,
+							'<a href="', link,
 							options.cssClass ? '" class="' + options.cssClass : '',
-							'" title="',
-							item.title,
-							'"></a>'
+							'" title="', item.title, '"></a>'
 							].join(''));
 					});
 			});
