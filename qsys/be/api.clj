@@ -3,11 +3,20 @@
   (:require [ vertx.core :as core ]
             [ vertx.eventbus :as eb ]
             [ postgres.async :refer :all ]
-            [ clojure.core [async :refer [<!!]] [memoize :as memo] [cache :as cache]]   ))
+            [ cheshire.core :as json ]
+            [ clojure.core [async :refer [<!!]] [memoize :as memo] [cache :as cache]] ))
 
 (def address "be.qsys.tinyleaps.api")
 
 (def db (open-db (:db (core/config))))
+
+(extend-protocol IPgParameter 
+  clojure.lang.IPersistentMap
+  (to-pg-value [value]
+    (.getBytes (json/generate-string value))))
+
+(defmethod from-pg-value com.github.pgasync.impl.Oid/JSON [oid value]
+  (json/parse-string (String. value)))
 
 (defmulti asyncCall :action)
 
@@ -27,7 +36,7 @@
 
 (defmethod asyncCall "blogs" [msg] 
   (let [pars (:pars msg)
-        stmt (str "select extract(epoch from bi.postdate), bi.title, bi.summary, bi.text "
+        stmt (str "select extract(epoch from bi.postdate), bi.title, bi.summary, bi.text, bi.flickr "
                   "from travelblog.blogitem bi "
                   "where bi.id in "
                   "(select distinct r.blogitem"
