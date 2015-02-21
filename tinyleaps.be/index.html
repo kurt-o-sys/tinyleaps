@@ -38,7 +38,7 @@
 
 		<script id='post' type='text/ractive'>
 			<article class="block-group">
-			<h1>{{title}}</h1>
+			<h1 on-click="ui-toggle:{{flickr}}">{{title}}</h1>
 
 
 			<div class="block content">
@@ -49,7 +49,7 @@
 					{{{text}}}
 				</div>
 				<div class="block pics">
-					testing 1
+                 <ul class="clearing-thumbs" data-clearing></ul>
 				</div>
 			</div>
 			<div class="block comment">comment 1</div>
@@ -58,6 +58,11 @@
 
 		<script src="jquery.js"></script>
 		<script src='http://cdn.ractivejs.org/latest/ractive.min.js'></script>
+
+		<script src="foundation.js"></script>
+		<script src="foundation.clearing.js"></script>
+		<script src="flickr.js"></script>
+
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
 		<script src="http://rangy.googlecode.com/svn/trunk/currentrelease/rangy-core.js"></script>
 		<script src="hallo.js"></script>
@@ -68,16 +73,23 @@
 		<script src="app.js"></script>
 
 		<script>
-			$('article > h1').click(function() {
-				$(this).siblings('div').slideToggle('slow');
-			});
-
 			var eb = null;
 
 			var posts = new Ractive({
 				el: 'section.blog',
 				template: '#blog'
 			});
+			posts.on('ui-toggle', function(event, flickr) {
+				$(event.node).siblings('div').slideToggle('slow');
+				flickr.container= '<li class="photos-set-item" />';
+				flickr.cssClass= 'photos-set-link';
+				var picsDiv = $(event.node).next('.content').children('.pics').first();
+				picsDiv.children('ul').first().flickrPhotoStream(flickr)
+					.done(function () {
+						picsDiv.foundation();
+					});
+			})
+
 
 			var travelinfo = new Ractive({
 				el: 'nav .travelinfo',
@@ -87,6 +99,7 @@
 			var session = {
 				travel: 1
 			};
+
 			$(document).ready(function() {
 				eb = new vertx.EventBus("http://test.tinyleaps.be/eventbus");
 				eb.onopen = function() {
@@ -97,7 +110,7 @@
 						pars: 
 						{
 							travel: session.travel,
-							limit: 10,
+							limit: 100,
 							offset: 0 
 						}
 					},
