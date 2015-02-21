@@ -36,7 +36,7 @@
 
 (defmethod asyncCall "blogs" [msg] 
   (let [pars (:pars msg)
-        stmt (str "select extract(epoch from bi.postdate), bi.title, bi.summary, bi.text, bi.flickr "
+        stmt (str "select extract(epoch from bi.postdate) as postdate, bi.title, bi.summary, bi.text, bi.flickr "
                   "from travelblog.blogitem bi "
                   "where bi.id in "
                   "(select distinct r.blogitem"
