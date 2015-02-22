@@ -46,7 +46,7 @@
 				{{formatDate(info.period.starttime)}} - {{formatDate(info.period.endtime)}}
 				</p>
 			{{else}}
-				<img src="./loading earth.gif" style="width: 64px"/>
+				<img src="./loading_earth.gif" style="width: 64px"/>
 			{{/if}}
 		</script>
 
@@ -57,7 +57,7 @@
 				{{/each}}
 			{{else}}
 				<div style="text-align:center;">
-					<img src="./loading earth.gif" style="width: 128px;"/>
+					<img src="./loading_earth.gif" style="width: 128px;"/>
 				</div>
 			{{/if}}
 		</script>
@@ -132,7 +132,7 @@
 			});
 
 			posts.on('ui-toggle', function(event, flickr) {
-				$(event.node).siblings('div').slideToggle('slow');
+				$(event.node).siblings('div').slideToggle();
 				flickr.container= '<li class="photos-set-item" />';
 				flickr.cssClass= 'photos-set-link';
 				var picsDiv = $(event.node).next('.content').children('.pics').first();
