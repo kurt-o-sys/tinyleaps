@@ -34,17 +34,14 @@
   (let [stmt "select * from travelblog.country" ]
     (<!! (<query! db [stmt]))))
 
-(defmethod asyncCall "blogs" [msg] 
+(defmethod asyncCall "posts" [msg] 
   (let [pars (:pars msg)
-        stmt (str "select extract(epoch from bi.postdate) as postdate, bi.title, bi.summary, bi.text, bi.flickr "
-                  "from travelblog.blogitem bi "
-                  "where bi.id in "
-                  "(select distinct r.blogitem"
-                  " from travelblog.route r"
-                  " where r.travel = $1 and r.blogitem is not null) "
-                  "order by bi.postdate desc "
-                  "limit $2 "
-                  "offset $3")] 
+        stmt (str "select p.postdate, p.countries, p.title, p.summary, p.text, p.text_en, p.flickr "
+		   "from travelblog.postdata p "
+                   "where p.travel_id = $1 "
+    		   "order by p.postdate desc "
+                   "limit $2 "
+                   "offset $3")]
     (<!! (<query! db [stmt (:travel pars) (:limit pars) (:offset pars)]))))
 
 (defmethod asyncCall :default [_] "")
