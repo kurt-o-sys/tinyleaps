@@ -76,14 +76,21 @@ article,
 div.content,
 div.comment,
 div.pics
-{ width: 100%; }
+{  width: 100%; }
 div.content,
 div.comment
 {
 	display: none;
 }
+
+article h1 .f16,
+article h2 .f32 {
+	margin-left: -1.62vw;
+	margin-right: 1vw;
+}
+
 div.pics .carousel img {
-	height: 100px;
+	height: 80px;
 }
 
 nav.block > div {
@@ -91,6 +98,26 @@ nav.block > div {
 	background-color: rgba(255,255,255,0.62);
 	border-radius: 0.5em;
 	box-shadow: 6px 6px 9px rgb(102,102,97);
+}
+
+div.comment ul {
+	list-style-type: none;
+}
+
+div.comment ul li {
+	line-height: 124%;
+	margin-bottom: 40px;
+}
+
+div.comment ul li .text {
+	font-family:"Swanky and Moo Moo", cursive;
+}
+
+div.comment ul li .name,
+div.comment ul li .date
+{
+	font-size: 84%;
+	float: right;
 }
 
 @media only screen and (min-width:20em) { /* smartphones, iPhone, portrait 480x320 phones */

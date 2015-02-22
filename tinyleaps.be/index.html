@@ -7,6 +7,9 @@
 		<link href="./responsive.css" type="text/css" rel="stylesheet"/>
 		<link href="./jquery-ui.min.css" type="text/css" rel="stylesheet"/>
 		<link href="./jquery-ui.theme.css" type="text/css" rel="stylesheet"/>
+
+		<link href="http://qsys.be/flags/flags16.css" type="text/css" rel="stylesheet" />
+
 		<title>Reisblog Ruth en Kurt</title>
 	</head>
 
@@ -30,15 +33,45 @@
 
 			<footer class="block">Footer</footer>
 		</div>
+
+		<script id="travelinfo" type="text/ractive">
+			{{#if loaded}}
+				<p>{{info.name}} ({{info.postcount}} posts)</p>
+				<p class="f16">
+				{{#each info.countries.reverse()}}
+				<span class="flag {{code}}" />
+					{{/each}}
+				</span>
+				<p>
+				{{formatDate(info.period.starttime)}} - {{formatDate(info.period.endtime)}}
+				</p>
+			{{else}}
+				<img src="./loading earth.gif" style="width: 64px"/>
+			{{/if}}
+		</script>
+
 		<script id="blog" type="text/ractive">
-			{{#each posts}}
-			{{>post}}
-			{{/each}}
+			{{#if loaded}}
+				{{#each posts}}
+				{{>post}}
+				{{/each}}
+			{{else}}
+				<div style="text-align:center;">
+					<img src="./loading earth.gif" style="width: 128px;"/>
+				</div>
+			{{/if}}
 		</script>
 
 		<script id='post' type='text/ractive'>
 			<article class="block-group">
-			<h1 on-click="ui-toggle:{{flickr}}">{{title}}</h1>
+			<h1 on-click="ui-toggle:{{flickr}}">
+				<span class="f16">
+					{{#each countries}}
+						<span class="flag {{code}}" />
+					{{/each}}
+				</span>
+				{{title}}
+			</h1>
 
 
 			<div class="block content">
@@ -49,10 +82,19 @@
 					{{{text}}}
 				</div>
 				<div class="block pics">
-                 <ul class="clearing-thumbs" data-clearing></ul>
+					<ul class="clearing-thumbs" data-clearing></ul>
 				</div>
 			</div>
-			<div class="block comment">comment 1</div>
+			<div class="block comment">
+				<ul>
+					{{#each comments}}
+					<li>
+					<span class="text">{{text}}</span><br />
+				   <span class="date">&nbsp;&mdash;&nbsp;{{formatDate(epoch, "DD MMM YYYY HH:mm")}}</span><span class="name">{{name}}</span>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
 			</article>
 		</script>
 
@@ -70,30 +112,41 @@
 		<script src="http://cdn.sockjs.org/sockjs-0.3.4.min.js"></script>
 		<script src="vertxbus.js"></script>
 
+		<script src="moment.js"></script>
+
 		<script src="app.js"></script>
 
 		<script>
-			var eb = null;
+
+			var helpers = Ractive.defaults.data;
+			
+			helpers.formatDate = function(epoch, format) {
+				f = typeof format !== 'undefined' ? format : "DD MMM YYYY";	
+				return moment(epoch*1000).format(f);
+			}
+
 
 			var posts = new Ractive({
 				el: 'section.blog',
 				template: '#blog'
 			});
+
 			posts.on('ui-toggle', function(event, flickr) {
 				$(event.node).siblings('div').slideToggle('slow');
 				flickr.container= '<li class="photos-set-item" />';
 				flickr.cssClass= 'photos-set-link';
 				var picsDiv = $(event.node).next('.content').children('.pics').first();
-				picsDiv.children('ul').first().flickrPhotoStream(flickr)
-					.done(function () {
+				if (picsDiv.has('.clearing-thumbs')) {
+					picsDiv.children('ul').first().flickrPhotoStream(flickr).done(function () {
 						picsDiv.foundation();
 					});
+				};
 			})
 
 
 			var travelinfo = new Ractive({
 				el: 'nav .travelinfo',
-				template: '{{name}} {{period}} {{countries}}'
+				template: '#travelinfo',
 			});
 
 			var session = {
@@ -106,7 +159,7 @@
 
 					eb.send("be.qsys.tinyleaps.api", 
 					{
-						action: "blogs",
+						action: "posts",
 						pars: 
 						{
 							travel: session.travel,
@@ -115,7 +168,9 @@
 						}
 					},
 					function(reply) {
+						console.log(reply.result);
 						posts.set('posts', reply.result); 
+						posts.set('loaded', true);
 					});
 
 					eb.send("be.qsys.tinyleaps.api", 
@@ -127,7 +182,8 @@
 						}
 					},
 					function(reply) {
-						travelinfo.set('info', reply.result[0]); 
+						travelinfo.set('info', reply.result); 
+						travelinfo.set('loaded', true);
 					});
 				}
 			});
