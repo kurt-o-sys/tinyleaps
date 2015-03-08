@@ -142,16 +142,19 @@
 				flickr.container= '<li class="photos-set-item" />';
 				flickr.cssClass= 'photos-set-link';
 				var picsDiv = $(event.node).next('.content').children('.pics').first();
-				picsDiv.children('ul.flickr-carousel').first().flickrPhotoStream(flickr).done(function() {
-					picsDiv.children('ul.flickr-carousel').first().children('li').each(function() {
-						$(this).click(function(event) {
-							var modalPic = picsDiv.children('.modal-content').first();
-							modalPic.children('.flickr-pic').attr('src', ''); 
-							modalPic.children('.flickr-pic').attr('src', $(event.target).attr('data-link'));
-							modalPic.children('.flickr-caption').html($(event.target).attr('data-caption'));
+				if (!picsDiv.attr('loaded')) {
+					picsDiv.children('ul.flickr-carousel').first().flickrPhotoStream(flickr).done(function() {
+						picsDiv.children('ul.flickr-carousel').first().children('li').each(function() {
+							$(this).click(function(event) {
+								var modalPic = picsDiv.children('.modal-content').first();
+								modalPic.children('.flickr-pic').attr('src', ''); 
+								modalPic.children('.flickr-pic').attr('src', $(event.target).attr('data-link'));
+								modalPic.children('.flickr-caption').html($(event.target).attr('data-caption'));
+							});
 						});
+						$(picsDiv).attr('loaded', true);
 					});
-				});
+				}
 			});
 
 			var travelinfo = new Ractive({
@@ -179,7 +182,6 @@
 						}
 					},
 					function(reply) {
-						console.log(reply.result);
 						posts.set('posts', reply.result); 
 						posts.set('loaded', true);
 					});
