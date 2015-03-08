@@ -33,15 +33,16 @@
 					var link = item.media.m.replace('_m', '_z');
 
 					$("<img data-caption='"+ item.title +"' />")
-						.attr("src", item.media.m)
-						.appendTo($el)
-						.wrap(options.container || '')
-						.wrap([
-							'<a href="', link,
-							options.cssClass ? '" class="' + options.cssClass : '',
-							'" title="', item.title, '"></a>'
-							].join(''));
-					});
+					.attr("src", item.media.m)
+					.attr("data-link", link)
+					.appendTo($el)
+					.wrap(options.container || '');
+					//.wrap([
+					//	'<a href="', link,
+					//	options.cssClass ? '" class="' + options.cssClass : '',
+					//	'" title="', item.title,'" on-click="show-flickr" ></a>'
+					//	].join(''));
+				});
 			});
 	};
 

@@ -76,7 +76,6 @@
 				</span>
 			</h1>
 
-
 			<div class="block content">
 				<div class="block summary">
 					{{{summary}}}
@@ -85,7 +84,11 @@
 					{{{text}}}
 				</div>
 				<div class="block pics">
-					<ul class="clearing-thumbs" data-clearing></ul>
+					<div class="modal-content">
+						<img class="flickr-pic" />
+						<p class="flickr-caption" />
+					</div>
+					<ul class="flickr-carousel" />
 				</div>
 			</div>
 			<div class="block comment">
@@ -139,13 +142,17 @@
 				flickr.container= '<li class="photos-set-item" />';
 				flickr.cssClass= 'photos-set-link';
 				var picsDiv = $(event.node).next('.content').children('.pics').first();
-				if (picsDiv.has('.clearing-thumbs')) {
-					picsDiv.children('ul').first().flickrPhotoStream(flickr).done(function () {
-						picsDiv.foundation();
+				picsDiv.children('ul.flickr-carousel').first().flickrPhotoStream(flickr).done(function() {
+					picsDiv.children('ul.flickr-carousel').first().children('li').each(function() {
+						$(this).click(function(event) {
+							var modalPic = picsDiv.children('.modal-content').first();
+							modalPic.children('.flickr-pic').attr('src', ''); 
+							modalPic.children('.flickr-pic').attr('src', $(event.target).attr('data-link'));
+							modalPic.children('.flickr-caption').html($(event.target).attr('data-caption'));
+						});
 					});
-				};
-			})
-
+				});
+			});
 
 			var travelinfo = new Ractive({
 				el: 'nav .travelinfo',
@@ -155,6 +162,7 @@
 			var session = {
 				travel: 1
 			};
+
 
 			$(document).ready(function() {
 				eb = new vertx.EventBus("http://test.tinyleaps.be/eventbus");
